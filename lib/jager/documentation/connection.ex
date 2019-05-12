@@ -5,23 +5,16 @@ defmodule Jager.Documentation.Connection do
   use TypedStruct
 
   typedstruct do
-    # Route Information
     field(:method, String.t(), enforce: true)
     field(:route, String.t(), enforce: true)
     field(:controller, module())
-
-    # Request Fields
     field(:body_params, map(), default: %{})
     field(:query_params, map(), default: %{})
     field(:request_headers, list(), default: [])
-
-    # Response Fields
     field(:response_format, atom(), default: :json)
     field(:response_body, map(), default: %{})
     field(:response_headers, list(), default: [])
     field(:status, integer(), enforce: true)
-
-    # Documentation Fields that can be overwritten.
     field(:name, String.t(), enforce: true)
     field(:action, atom())
     field(:documentation, String.t())
