@@ -1,18 +1,12 @@
 defmodule Jager do
-  @moduledoc """
-  Documentation for Jager.
-  """
+  alias Jager.Recorder
 
   @doc """
-  Hello world.
+  Adds the passed argument `conn` to the recorder.
+  Accept opts that are a keyworded list of extra information regarding the tested route.
 
-  ## Examples
-
-      iex> Jager.hello()
-      :world
-
+  Returns the received connection as argument.
   """
-  def hello do
-    :world
-  end
+  @spec doc(Plug.Conn.t(), List.t()) :: Plug.Conn.t()
+  def doc(conn = %Plug.Conn{}, opts \\ []), do: Recorder.record(conn, opts)
 end
