@@ -1,6 +1,8 @@
 # Jager
 
-**TODO: Add description**
+**CURRENTLY IN DEVELOPMENT**
+
+Jager is a library to document REST like API's.
 
 ## Installation
 
@@ -14,8 +16,3 @@ def deps do
   ]
 end
 ```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/jager](https://hexdocs.pm/jager).
-
