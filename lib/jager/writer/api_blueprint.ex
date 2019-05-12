@@ -12,8 +12,6 @@ defmodule Jager.Writer.ApiBlueprint do
       [
         metadata(documentation),
         title(documentation)
-        #   description(documentation),
-        #   routes(documentation)
       ]
       |> join_docs()
 
@@ -41,9 +39,6 @@ defmodule Jager.Writer.ApiBlueprint do
 
   defp header(string, n),
     do: @markdown_header |> List.duplicate(n) |> Enum.join() |> space() |> Kernel.<>(string)
-
-  defp indent(string, n \\ 2)
-  defp indent(string, n), do: @spacing |> List.duplicate(n) |> Enum.join() |> Kernel.<>(string)
 
   defp space(string, n \\ 1)
 
