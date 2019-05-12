@@ -7,7 +7,6 @@ defmodule Jager.Writer do
     documentation
     |> ApiBlueprint.generate()
     |> write_file()
-    |> IO.inspect()
   end
 
   @spec write_file(Jager.Documentation.t()) :: {:error, File.posix()}
