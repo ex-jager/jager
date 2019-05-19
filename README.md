@@ -1,6 +1,6 @@
 # Jager
 
-**CURRENTLY IN DEVELOPMENT**
+This library is **CURRENTLY IN DEVELOPMENT**.
 
 Jager is a library to document REST like API's.
 
