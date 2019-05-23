@@ -21,6 +21,7 @@ defmodule Jager.MixProject do
   defp deps do
     [
       {:jason, "~> 1.0"},
+      {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
       {:phoenix, "~> 1.4"},
       {:typed_struct, "~> 0.1.4"}
     ]
