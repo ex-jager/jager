@@ -5,7 +5,7 @@ defmodule Jager.Writer.ApiBlueprint do
   @line_break "\n"
   @spacing_between_elements 2
   @markdown_header "#"
-  @spacing " "
+  @space " "
 
   def generate(documentation = %Documentation{}) do
     doc =
@@ -18,7 +18,8 @@ defmodule Jager.Writer.ApiBlueprint do
     %{documentation | text: doc}
   end
 
-  defp metadata(documentation = %Documentation{}), do: join_docs([@format, documentation.host])
+  defp metadata(documentation = %Documentation{}),
+    do: join_docs([@format, documentation.host])
 
   defp title(documentation = %Documentation{}) do
     [
@@ -28,19 +29,13 @@ defmodule Jager.Writer.ApiBlueprint do
     |> join_docs(@spacing_between_elements)
   end
 
-  defp join_docs(list, number_of_lines \\ 1)
-
-  defp join_docs(list, number_of_lines) do
+  defp join_docs(list, number_of_lines \\ 1) do
     lines_to_skip = @line_break |> List.duplicate(number_of_lines) |> Enum.join()
     list |> Enum.join(lines_to_skip) |> Kernel.<>(@line_break)
   end
 
-  defp header(string, n \\ 1)
-
-  defp header(string, n),
+  defp header(string, n \\ 1),
     do: @markdown_header |> List.duplicate(n) |> Enum.join() |> space() |> Kernel.<>(string)
 
-  defp space(string, n \\ 1)
-
-  defp space(string, n), do: string <> (@spacing |> List.duplicate(n) |> Enum.join())
+  defp space(string, n \\ 1), do: string <> (@space |> List.duplicate(n) |> Enum.join())
 end
