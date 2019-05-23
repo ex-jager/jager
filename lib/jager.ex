@@ -7,6 +7,6 @@ defmodule Jager do
 
   Returns the received connection as argument.
   """
-  @spec doc(Plug.Conn.t(), List.t()) :: Plug.Conn.t()
+  @spec doc(Plug.Conn.t(), list()) :: Plug.Conn.t()
   def doc(conn = %Plug.Conn{}, opts \\ []), do: Recorder.record(conn, opts)
 end

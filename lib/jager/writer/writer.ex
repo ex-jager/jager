@@ -2,7 +2,7 @@ defmodule Jager.Writer do
   alias Jager.Documentation
   alias Jager.Writer.ApiBlueprint
 
-  @spec write(Jager.Documentation.t()) :: {:ok, File.t()} | {:error, atom()}
+  @spec write(Jager.Documentation.t()) :: {:ok, File.posix()} | {:error, atom()}
   def write(documentation = %Documentation{}) do
     documentation
     |> ApiBlueprint.generate()
