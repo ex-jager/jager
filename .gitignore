@@ -6,3 +6,5 @@
 erl_crash.dump
 *.ez
 jager-*.tar
+/priv/plts/*.plt
+/priv/plts/*.plt.hash
