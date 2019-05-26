@@ -1,6 +1,7 @@
 defmodule Jager.Documentation do
   use TypedStruct
   alias Jager.Documentation.Connection
+  alias Jager.Writer
 
   @default_title "API Documentation"
   @default_host "http://localhost:4000"
@@ -10,7 +11,6 @@ defmodule Jager.Documentation do
   @default_type :apib
 
   typedstruct do
-    field(:type, Atom.t(), enforce: true, default: @default_type)
     field(:title, String.t(), enforce: true, default: @default_title)
     field(:description, String.t())
     field(:host, String.t(), enfoce: true)
@@ -18,23 +18,24 @@ defmodule Jager.Documentation do
     field(:path, String.t(), enforce: true)
     field(:file_name, String.t(), enforce: true)
     field(:text, String.t())
+    field(:writer, module(), enforce: true)
   end
 
   @spec new() :: Jager.Documentation.t()
   def new() do
     %__MODULE__{
-      type: get_config(:type, @default_type),
       title: get_config(:title, @default_title),
       description: get_config(:description, @default_description),
       host: get_config(:host, @default_host),
       records: [],
       path: get_config(:file_path, @default_path),
-      file_name: get_config(:file_name, @default_file_name)
+      file_name: get_config(:file_name, @default_file_name),
+      writer: get_writer()
     }
   end
 
   @spec get_config(atom(), any()) :: any()
-  def get_config(config, default), do: Application.get_env(:jager, config, default)
+  defp get_config(config, default), do: Application.get_env(:jager, config, default)
 
   @spec parse_record(Plug.Conn.t(), keyword()) :: Jager.Documentation.Connection.t()
   def parse_record(conn = %Plug.Conn{}, opts), do: Connection.new(conn, opts)
@@ -45,4 +46,6 @@ defmodule Jager.Documentation do
   def group_routes(documentation = %__MODULE__{}) do
     documentation
   end
+
+  defp get_writer(), do: :type |> get_config(@default_type) |> Writer.get_writer()
 end
