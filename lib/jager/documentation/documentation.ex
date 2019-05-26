@@ -1,6 +1,6 @@
 defmodule Jager.Documentation do
   use TypedStruct
-  alias Jager.Documentation.Connection
+  alias Jager.Documentation.{Connection, Group}
   alias Jager.Writer
 
   @default_title "API Documentation"
@@ -19,6 +19,7 @@ defmodule Jager.Documentation do
     field(:file_name, String.t(), enforce: true)
     field(:text, String.t())
     field(:writer, module(), enforce: true)
+    field(:grouped_records, [Group.t()], enforce: false)
   end
 
   @spec new() :: Jager.Documentation.t()
@@ -30,7 +31,8 @@ defmodule Jager.Documentation do
       records: [],
       path: get_config(:file_path, @default_path),
       file_name: get_config(:file_name, @default_file_name),
-      writer: get_writer()
+      writer: get_writer(),
+      grouped_records: []
     }
   end
 
@@ -43,8 +45,14 @@ defmodule Jager.Documentation do
   @spec parse_record({Plug.Conn.t(), keyword()}) :: Jager.Documentation.Connection.t()
   def parse_record({conn, opts}), do: parse_record(conn, opts)
 
-  def group_routes(documentation = %__MODULE__{}) do
-    documentation
+  @spec group_routes(Jager.Documentation.t()) :: Jager.Documentation.t()
+  def group_routes(documentation = %__MODULE__{records: records}) do
+    groups =
+      records
+      |> Enum.group_by(& &1.controller)
+      |> Enum.map(fn {controller, records} -> Group.new("name", controller, records) end)
+
+    %{documentation | grouped_records: groups}
   end
 
   defp get_writer(), do: :type |> get_config(@default_type) |> Writer.get_writer()
