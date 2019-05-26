@@ -1,5 +1,6 @@
 defmodule Jager.Writer.ApiBlueprint do
   alias Jager.Documentation
+  alias Jager.Documentation.{Connection, Group}
 
   @format "FORMAT: 1A"
   @line_break "\n"
@@ -8,6 +9,8 @@ defmodule Jager.Writer.ApiBlueprint do
   @space " "
 
   def generate(documentation = %Documentation{}) do
+    groups(documentation)
+
     doc =
       [
         metadata(documentation),
@@ -32,6 +35,16 @@ defmodule Jager.Writer.ApiBlueprint do
   defp join_docs(list, number_of_lines \\ 1) do
     lines_to_skip = @line_break |> List.duplicate(number_of_lines) |> Enum.join()
     list |> Enum.join(lines_to_skip) |> Kernel.<>(@line_break)
+  end
+
+  defp groups(documentation) do
+    Enum.reduce(documentation.grouped_records, "", fn group, _ ->
+      single_group(group)
+    end)
+  end
+
+  defp single_group(group = %Group{}) do
+    group
   end
 
   defp header(string, n \\ 1),
