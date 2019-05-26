@@ -7,8 +7,10 @@ defmodule Jager.Documentation do
   @default_description "Update description in Jager configuration in config.exs."
   @default_path "priv/static/docs"
   @default_file_name "api.apib"
+  @default_type :apib
 
   typedstruct do
+    field(:type, Atom.t(), enforce: true, default: @default_type)
     field(:title, String.t(), enforce: true, default: @default_title)
     field(:description, String.t())
     field(:host, String.t(), enfoce: true)
@@ -21,6 +23,7 @@ defmodule Jager.Documentation do
   @spec new() :: Jager.Documentation.t()
   def new() do
     %__MODULE__{
+      type: get_config(:type, @default_type),
       title: get_config(:title, @default_title),
       description: get_config(:description, @default_description),
       host: get_config(:host, @default_host),
