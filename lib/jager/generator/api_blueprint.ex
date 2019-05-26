@@ -1,6 +1,8 @@
-defmodule Jager.Writer.ApiBlueprint do
+defmodule Jager.Generator.ApiBlueprint do
+  @behaviour Jager.Generator
+
   alias Jager.Documentation
-  alias Jager.Documentation.{Connection, Group}
+  alias Jager.Documentation.Group
 
   @format "FORMAT: 1A"
   @line_break "\n"
@@ -8,6 +10,8 @@ defmodule Jager.Writer.ApiBlueprint do
   @markdown_header "#"
   @space " "
 
+  @spec generate(Documentation.t()) :: {:ok, String.t()}
+  @impl Jager.Generator
   def generate(documentation = %Documentation{}) do
     groups(documentation)
 
@@ -18,7 +22,7 @@ defmodule Jager.Writer.ApiBlueprint do
       ]
       |> join_docs()
 
-    %{documentation | text: doc}
+    {:ok, doc}
   end
 
   defp metadata(documentation = %Documentation{}),
@@ -44,7 +48,7 @@ defmodule Jager.Writer.ApiBlueprint do
   end
 
   defp single_group(group = %Group{}) do
-    group
+    IO.inspect(group)
   end
 
   defp header(string, n \\ 1),

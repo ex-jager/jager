@@ -1,28 +1,19 @@
 defmodule Jager.Writer do
   alias Jager.Documentation
-  alias Jager.Writer.ApiBlueprint
 
-  @valid_writers %{apib: ApiBlueprint}
-
-  @spec write(Jager.Documentation.t()) :: {:ok, File.posix()} | {:error, atom()}
-  def write(documentation = %Documentation{writer: writer}) do
-    documentation
-    |> writer.generate()
-    |> write_file()
-  end
-
-  @spec write_file(Jager.Documentation.t()) :: {:error, File.posix()}
-  def write_file(documentation = %Documentation{text: text}) when is_bitstring(text) do
-    with :ok <- File.mkdir_p(documentation.path),
-         :ok <- documentation.path |> Path.join(documentation.file_name) |> File.write(text) do
-      {:ok, text}
+  @spec write(Jager.Documentation.t()) :: {:ok, String.t()} | {:error, atom()}
+  def write(documentation = %Documentation{generator: generator}) do
+    with {:ok, text} <- generator.generate(documentation),
+         {:ok, written} <- write_file(text, documentation.path, documentation.file_name) do
+      {:ok, written}
     end
   end
 
-  def get_writer(atom) do
-    case Map.fetch(@valid_writers, atom) do
-      {:ok, module} -> module
-      _ -> raise("Writer correctly specified, valid options are: #{Map.keys(@valid_writers)}")
+  @spec write_file(String.t(), String.t(), String.t()) :: {:error, atom} | {:ok, String.t()}
+  def write_file(text, path, file_name) do
+    with :ok <- File.mkdir_p(path),
+         :ok <- path |> Path.join(file_name) |> File.write(text) do
+      {:ok, text}
     end
   end
 end

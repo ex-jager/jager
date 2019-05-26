@@ -1,4 +1,4 @@
-defmodule Jager.Generator do
+defmodule Jager.Monitor do
   use GenServer
   require Logger
   alias Jager.{Documentation, Recorder, Writer}
@@ -9,7 +9,7 @@ defmodule Jager.Generator do
 
   test_helper.exs
   ```elixir
-  ExUnit.start(formatters: [ExUnit.CLIFormatter, Jager.Generator])
+  ExUnit.start(formatters: [ExUnit.CLIFormatter, Jager.Monitor])
   ...
   ```
 
@@ -20,13 +20,13 @@ defmodule Jager.Generator do
   def init(_args), do: {:ok, nil}
 
   def handle_cast({:suite_finished, _, _}, nil) do
-    generate()
+    execute()
     {:noreply, nil}
   end
 
   def handle_cast(_, nil), do: {:noreply, nil}
 
-  defp generate() do
+  defp execute() do
     Documentation.new()
     |> parse_records()
     |> Documentation.group_routes()

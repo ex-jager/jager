@@ -1,7 +1,7 @@
 defmodule Jager.Documentation do
   use TypedStruct
   alias Jager.Documentation.{Connection, Group}
-  alias Jager.Writer
+  alias Jager.Generator
 
   @default_title "API Documentation"
   @default_host "http://localhost:4000"
@@ -18,7 +18,7 @@ defmodule Jager.Documentation do
     field(:path, String.t(), enforce: true)
     field(:file_name, String.t(), enforce: true)
     field(:text, String.t())
-    field(:writer, module(), enforce: true)
+    field(:generator, module(), enforce: true)
     field(:grouped_records, [Group.t()], enforce: false)
   end
 
@@ -31,7 +31,7 @@ defmodule Jager.Documentation do
       records: [],
       path: get_config(:file_path, @default_path),
       file_name: get_config(:file_name, @default_file_name),
-      writer: get_writer(),
+      generator: get_generator(),
       grouped_records: []
     }
   end
@@ -55,5 +55,5 @@ defmodule Jager.Documentation do
     %{documentation | grouped_records: groups}
   end
 
-  defp get_writer(), do: :type |> get_config(@default_type) |> Writer.get_writer()
+  defp get_generator(), do: :type |> get_config(@default_type) |> Generator.get_generator()
 end
