@@ -19,7 +19,7 @@ defmodule Jager.Documentation do
     field(:file_name, String.t(), enforce: true)
     field(:text, String.t())
     field(:generator, module(), enforce: true)
-    field(:grouped_records, [Group.t()], enforce: false)
+    field(:grouped_records, [Group.t()])
   end
 
   @spec new() :: Jager.Documentation.t()
