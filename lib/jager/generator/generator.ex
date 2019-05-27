@@ -5,6 +5,7 @@ defmodule Jager.Generator do
   @valid_generators %{apib: ApiBlueprint, custom: nil}
   @callback generate(Documentation.t()) :: {:ok, String.t()}
 
+  @spec get_generator(atom()) :: module() | no_return
   def get_generator(atom) do
     case Map.fetch(@valid_generators, atom) do
       {:ok, nil} -> Application.get_env(:jager, :custom_generator)

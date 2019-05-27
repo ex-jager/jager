@@ -10,7 +10,6 @@ defmodule Jager.Generator.ApiBlueprint do
   @markdown_header "#"
   @space " "
 
-  @spec generate(Documentation.t()) :: {:ok, String.t()}
   @impl Jager.Generator
   def generate(documentation = %Documentation{}) do
     groups(documentation)
