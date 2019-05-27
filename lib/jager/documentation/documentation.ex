@@ -50,7 +50,10 @@ defmodule Jager.Documentation do
     groups =
       records
       |> Enum.group_by(& &1.controller)
-      |> Enum.map(fn {controller, records} -> Group.new("name", controller, records) end)
+      |> Enum.map(fn {controller, records} ->
+        [resource, _] = controller |> Module.split() |> List.last() |> String.split("Controller")
+        Group.new(resource, controller, records)
+      end)
 
     %{documentation | grouped_records: groups}
   end
